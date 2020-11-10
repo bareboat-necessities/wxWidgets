@@ -89,7 +89,7 @@ GTK_CONFIGURE_OPTIONS = $(COMMON_CONFIGURE_OPTIONS) \
     --enable-mediactrl \
     --enable-sound \
     --enable-webview \
-    --with-gtk=3 \
+    --with-gtk \
     --with-libjpeg=sys \
     --with-libpng=sys \
     --with-libtiff=sys \
@@ -103,7 +103,7 @@ GTK3_CONFIGURE_OPTIONS = $(COMMON_CONFIGURE_OPTIONS) \
     --enable-mediactrl \
     --enable-sound \
     --enable-webview \
-    --with-gtk=3 \
+    --with-gtk \
     --with-libjpeg=sys \
     --with-libpng=sys \
     --with-libtiff=sys \
@@ -749,8 +749,5 @@ binary-cross: control-files-stamp $(install_all_cross)
 	binary-wxbase binary-wxbase-dev		\
 	binary-cross						\
 	install install_arch \
-	install-gtk3-lib install-gtk3-dev		\
-	install-gtk3media-lib install-gtk3media-dev	\
-	install-gtk3webview-lib install-gtk3webview-dev	\
 	install-common install-headers install-i18n         \
 	install-examples install-msw-dev install-headers-msw
