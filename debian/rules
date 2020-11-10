@@ -53,7 +53,6 @@ so_age := $(shell sed 's,<set var="WX_AGE">\([0-9]\+\)</set>,\1,p;d' build/bakef
 soversion := $(shell expr $(so_cur) - $(so_age))
 
 sorelease := $(release:%-$(DEBIAN_WXFLAVOUR)=%)-$(soversion)$(addprefix -,$(DEBIAN_WXFLAVOUR))v5
-soreleasegtk3 := $(release:%-$(DEBIAN_WXFLAVOUR)=%)-gtk3-$(soversion)$(addprefix -,$(DEBIAN_WXFLAVOUR))v5
 
 # Base value for alternative priorities.
 alt_prio  := $(subst .,,$(release))
@@ -96,20 +95,6 @@ GTK_CONFIGURE_OPTIONS = $(COMMON_CONFIGURE_OPTIONS) \
     --with-opengl \
     --libdir=\$${exec_prefix}/lib/$(DEB_HOST_MULTIARCH)
 
-GTK3_CONFIGURE_OPTIONS = $(COMMON_CONFIGURE_OPTIONS) \
-    --enable-display \
-    --enable-geometry \
-    --enable-graphics_ctx \
-    --enable-mediactrl \
-    --enable-sound \
-    --enable-webview \
-    --with-gtk \
-    --with-libjpeg=sys \
-    --with-libpng=sys \
-    --with-libtiff=sys \
-    --with-opengl \
-    --libdir=\$${exec_prefix}/lib/$(DEB_HOST_MULTIARCH)
-
 MSW_CONFIGURE_OPTIONS = \
     --enable-display \
     --with-msw \
@@ -131,15 +116,6 @@ package_gtk_dev         := libwxgtk$(release)-dev
 package_gtkmedia_lib    := libwxgtk-media$(sorelease)
 package_gtkmedia_dev    := libwxgtk-media$(release)-dev
 
-package_gtk3_lib         := libwxgtk$(soreleasegtk3)
-package_gtk3_dev         := libwxgtk$(release)-gtk3-dev
-
-package_gtk3media_lib    := libwxgtk-media$(soreleasegtk3)
-package_gtk3media_dev    := libwxgtk-media$(release)-gtk3-dev
-
-package_gtk3webview_lib    := libwxgtk-webview$(soreleasegtk3)
-package_gtk3webview_dev    := libwxgtk-webview$(release)-gtk3-dev
-
 package_headers         := wx$(release)-headers
 package_i18n            := wx$(release)-i18n
 package_doc             := wx$(release)-doc
@@ -149,7 +125,6 @@ package_common           = wx-common
 # The packages listed here are common to all wx versions, and may be provided
 # by another source package if more than one is in the release simultaneously.
 common_packages	:= $(package_common)
-
 
 package_msw_dev         := libwxmsw$(release)-dev
 package_headers_msw     := wx$(release)-headers-msw
@@ -165,8 +140,6 @@ endif
 objdir_wxbase_shared       = objs_wxbase_sh
 objdir_gtk_shared          = objs_gtk_sh
 objdir_gtk_install         = objs_gtk_install
-objdir_gtk3_shared         = objs_gtk3_sh
-objdir_gtk3_install        = objs_gtk3_install
 
 objdir_doc                 = docs/doxygen/out
 objdir_examples            = docs/examples
@@ -177,7 +150,6 @@ objdir_msw_static          = objs_msw_st
 objdir_msw_install         = objs_msw_install
 
 objdirs := $(objdir_wxbase_shared) $(objdir_gtk_shared) $(objdir_gtk_install) \
-	   $(objdir_gtk3_shared) $(objdir_gtk3_install) \
 	   $(objdir_doc) $(objdir_examples) \
 	   $(objdir_msw_shared) $(objdir_msw_static) $(objdir_msw_install)
 
@@ -189,7 +161,6 @@ objdirs := $(objdir_wxbase_shared) $(objdir_gtk_shared) $(objdir_gtk_install) \
 # Build stamps:
 build_arch_stamps = build-wxbase-shared-stamp \
                     build-gtk-shared-stamp build-gtk-shared-contrib-stamp \
-                    build-gtk3-shared-stamp \
                     build-i18n-stamp
 
 build_indep_stamps = build-doc-stamp build-examples-stamp
@@ -205,9 +176,6 @@ build_stamps := $(build_stamps_native) $(build_cross_stamps)
 install_all_arch = install-wxbase-lib install-wxbase-dev \
                    install-gtk-lib install-gtk-dev        \
 		   install-gtkmedia-lib install-gtkmedia-dev \
-                   install-gtk3-lib install-gtk3-dev        \
-		   install-gtk3media-lib install-gtk3media-dev \
-		   install-gtk3webview-lib install-gtk3webview-dev \
                    install-headers install-i18n
 
 ifndef DEBIAN_WX_DEFAULT_VERSION
@@ -226,7 +194,7 @@ install_all := $(install_all_native) $(install_all_cross)
 # The Rules:
 
 debian/control: debian/control.in
-	sed -e 's/=V/$(release)/g;s/=SOV/$(sorelease)/g;s/=SOG3V/$(soreleasegtk3)/g'\
+	sed -e 's/=V/$(release)/g;s/=SOV/$(sorelease)/g'\
 		< debian/control.in > debian/control
 
 control-files-stamp: debian/control
@@ -242,12 +210,6 @@ control-files-stamp: debian/control
 		sed -e  's/=V/$(release)/g;s/=PRIO/$(alt_prio)/g;s/=MA/$(DEB_HOST_MULTIARCH)/g' \
 			< debian/libwxgtk-dev.$$f                            \
 			> debian/$(package_gtk_dev).$$f;                     \
-	done
-	@for f in postinst prerm; do                                         \
-		echo "generating control file $(package_gtk3_dev).$$f";      \
-		sed -e  's/=V/$(release)/g;s/=PRIO/$(alt_prio)/g;s/=MA/$(DEB_HOST_MULTIARCH)/g' \
-			< debian/libwxgtk-gtk3-dev.$$f                       \
-			> debian/$(package_gtk3_dev).$$f;                    \
 	done
 	@for f in doc-base; do                                               \
 		echo "generating control file $(package_doc).$$f";           \
@@ -266,7 +228,7 @@ control-files-stamp: debian/control
 			> debian/$(package_msw_dev).$$f;                     \
 	done
 	@echo "generating control file lintian-override";                    \
-		sed -e  's/=V/$(release)/g;s/=SOV/$(sorelease)/g;s/=SOG3V/$(soreleasegtk3)/g'            \
+		sed -e  's/=V/$(release)/g;s/=SOV/$(sorelease)/g'            \
 			< debian/lintian-override.in                         \
 			> debian/lintian-override;                           \
 	touch $@
@@ -322,21 +284,6 @@ build-gtk-shared-stamp: configure-gtk-shared-stamp
 build-gtk-shared-contrib-stamp: build-gtk-shared-stamp
 	dh_testdir
 	$(FAST_MAKE) -C $(objdir_gtk_shared)/utils/wxrc
-	touch $@
-
-configure-gtk3-shared-stamp:
-	dh_testdir
-	autoconf -f -B build/autoconf_prepend-include
-	dh_update_autotools_config
-	mkdir -p $(objdir_gtk3_shared)
-	cd $(objdir_gtk3_shared) \
-	    && ../configure $(GTK3_CONFIGURE_OPTIONS)
-	touch $@
-
-build-gtk3-shared-stamp: configure-gtk3-shared-stamp
-	dh_testdir
-	$(FAST_MAKE) -C $(objdir_gtk3_shared)
-	cd $(objdir_gtk3_shared)/lib && ln -s . $(DEB_HOST_MULTIARCH)
 	touch $@
 
 build-doc-stamp:
@@ -456,8 +403,6 @@ clean: debian/control
 	      debian/$(package_wxbase_dev).* \
 	      debian/$(package_gtk_lib).* \
 	      debian/$(package_gtk_dev).* \
-	      debian/$(package_gtk3_lib).* \
-	      debian/$(package_gtk3_dev).* \
 	      debian/$(package_headers).* \
 	      debian/$(package_i18n).* \
 	      debian/$(package_doc).* \
@@ -537,66 +482,6 @@ install-gtkmedia-dev: install-gtk-shared-stamp
 	dh_testroot
 	dh_prep
 	dh_install $(objdir_gtk_install)/lib/$(DEB_HOST_MULTIARCH)/libwx_gtk*media*.so	usr/lib/$(DEB_HOST_MULTIARCH)
-
-install-gtk3-shared-stamp: build-gtk3-shared-stamp
-	dh_testdir
-	mkdir -p $(objdir_gtk3_install)
-	$(MAKE) -C $(objdir_gtk3_shared) install prefix=`pwd`/$(objdir_gtk3_install)
-	# Strip the kernel version of build machine from WXWIN_OS_DESCRIPTION
-	# as it isn't useful information and makes the build less reproducible.
-	sed -i 's/^\(#define WXWIN_OS_DESCRIPTION "[^ ]*\).*/\1"/' $(objdir_gtk3_install)/lib/*/wx/include/*/wx/setup.h
-	touch $@
-
-install-gtk3-lib: DH_OPTIONS=-p$(package_gtk3_lib)
-install-gtk3-lib: install-gtk3-shared-stamp
-	dh_testdir
-	dh_testroot
-	dh_prep
-	dh_install -Xmedia -Xwebview $(objdir_gtk3_install)/lib/$(DEB_HOST_MULTIARCH)/libwx_gtk*.so.*	usr/lib/$(DEB_HOST_MULTIARCH)
-	dh_installdirs usr/share/lintian/overrides
-	grep ^$(package_gtk3_lib): debian/lintian-override > debian/$(package_gtk3_lib)/usr/share/lintian/overrides/$(package_gtk3_lib)
-
-install-gtk3-dev: DH_OPTIONS=-p$(package_gtk3_dev)
-install-gtk3-dev: install-gtk3-shared-stamp
-	dh_testdir
-	dh_testroot
-	dh_prep
-	dh_install -Xmedia -Xwebview $(objdir_gtk3_install)/lib/$(DEB_HOST_MULTIARCH)/libwx_gtk*.so	usr/lib/$(DEB_HOST_MULTIARCH)
-	dh_install -Xmediactrl $(objdir_gtk3_install)/lib/$(DEB_HOST_MULTIARCH)/wx/include	usr/lib/$(DEB_HOST_MULTIARCH)/wx
-	dh_install $(objdir_gtk3_install)/lib/$(DEB_HOST_MULTIARCH)/wx/config/gtk*	usr/lib/$(DEB_HOST_MULTIARCH)/wx/config
-
-install-gtk3media-lib: DH_OPTIONS=-p$(package_gtk3media_lib)
-install-gtk3media-lib: install-gtk3-shared-stamp
-	dh_testdir
-	dh_testroot
-	dh_prep
-	dh_install $(objdir_gtk3_install)/lib/$(DEB_HOST_MULTIARCH)/libwx_gtk*media*.so.*	usr/lib/$(DEB_HOST_MULTIARCH)
-	dh_installdirs usr/share/lintian/overrides
-	grep ^$(package_gtk3media_lib): debian/lintian-override > debian/$(package_gtk3media_lib)/usr/share/lintian/overrides/$(package_gtk3media_lib)
-
-install-gtk3media-dev: DH_OPTIONS=-p$(package_gtk3media_dev)
-install-gtk3media-dev: install-gtk3-shared-stamp
-	dh_testdir
-	dh_testroot
-	dh_prep
-	dh_install $(objdir_gtk3_install)/lib/$(DEB_HOST_MULTIARCH)/libwx_gtk*media*.so	usr/lib/$(DEB_HOST_MULTIARCH)
-
-install-gtk3webview-lib: DH_OPTIONS=-p$(package_gtk3webview_lib)
-install-gtk3webview-lib: install-gtk3-shared-stamp
-	dh_testdir
-	dh_testroot
-	dh_prep
-	dh_install $(objdir_gtk3_install)/lib/$(DEB_HOST_MULTIARCH)/libwx_gtk*webview*.so.*        usr/lib/$(DEB_HOST_MULTIARCH)
-	dh_install $(objdir_gtk3_install)/lib/$(DEB_HOST_MULTIARCH)/wx/$(release).5/web-extensions/*        usr/lib/$(DEB_HOST_MULTIARCH)/wx/$(release)/web-extensions
-	dh_installdirs usr/share/lintian/overrides
-	grep ^$(package_gtk3webview_lib): debian/lintian-override > debian/$(package_gtk3webview_lib)/usr/share/lintian/overrides/$(package_gtk3webview_lib)
-
-install-gtk3webview-dev: DH_OPTIONS=-p$(package_gtk3webview_dev)
-install-gtk3webview-dev: install-gtk3-shared-stamp
-	dh_testdir
-	dh_testroot
-	dh_prep
-	dh_install $(objdir_gtk3_install)/lib/$(DEB_HOST_MULTIARCH)/libwx_gtk*webview*.so  usr/lib/$(DEB_HOST_MULTIARCH)
 
 install-common: DH_OPTIONS=-p$(package_common)
 install-common: install-gtk-shared-stamp
@@ -735,7 +620,7 @@ binary: binary-arch binary-indep
 # that is not in the control file.
 binary-cross: control-files-stamp $(install_all_cross)
 	cat debian/control.in debian/control.msw.in |\
-	    sed -e 's/=V/$(release)/g;s/=SOV/$(sorelease)/g;s/=SOG3V/$(soreleasegtk3)/g'\
+	    sed -e 's/=V/$(release)/g;s/=SOV/$(sorelease)/g'\
 		> debian/control
 
 	$(MAKE) -f debian/rules \
