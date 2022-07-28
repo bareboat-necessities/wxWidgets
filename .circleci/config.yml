@@ -16,6 +16,7 @@ executors:
 commands:
   git-checkout:
     steps:
+      - checkout
       - run: git submodule init; git submodule update
   build-n-publish-debian:
     steps:
