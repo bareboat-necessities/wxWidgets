@@ -1,3 +1,145 @@
+wxwidgets3.2 (3.2.5+dfsg-1) unstable; urgency=medium
+
+  * Update to new upstream release 3.2.5
+
+ -- Scott Talbert <swt@techie.net>  Sun, 19 May 2024 21:51:41 -0400
+
+wxwidgets3.2 (3.2.4+dfsg-5) unstable; urgency=medium
+
+  * Skip WebView tests on loong64 (Closes: #1066962)
+
+ -- Scott Talbert <swt@techie.net>  Tue, 26 Mar 2024 20:38:08 -0400
+
+wxwidgets3.2 (3.2.4+dfsg-4) unstable; urgency=medium
+
+  * Remove unmaintained shlibs file (Closes: #1060711)
+  * Fix lintian overrides after t64 changes
+  * Add some more lintian overrides
+  * Mark patches as not needing forwarding
+
+ -- Scott Talbert <swt@techie.net>  Thu, 21 Mar 2024 22:35:57 -0400
+
+wxwidgets3.2 (3.2.4+dfsg-3.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Rename libraries for 64-bit time_t transition.  Closes: #1063244
+
+ -- Steve Langasek <vorlon@debian.org>  Thu, 29 Feb 2024 06:04:15 +0000
+
+wxwidgets3.2 (3.2.4+dfsg-3) unstable; urgency=medium
+
+  * Fix FTBFS w/ WebKitGTK 2.43 (Closes: #1060835)
+
+ -- Scott Talbert <swt@techie.net>  Sun, 04 Feb 2024 11:57:41 -0500
+
+wxwidgets3.2 (3.2.4+dfsg-2) unstable; urgency=medium
+
+  * Enable wxLZMAInputStream (Closes: #1060313)
+
+ -- Scott Talbert <swt@techie.net>  Tue, 09 Jan 2024 18:58:08 -0500
+
+wxwidgets3.2 (3.2.4+dfsg-1) unstable; urgency=medium
+
+  * Update to new upstream release 3.2.4
+
+ -- Scott Talbert <swt@techie.net>  Mon, 13 Nov 2023 20:30:30 -0500
+
+wxwidgets3.2 (3.2.3+dfsg-3) unstable; urgency=medium
+
+  * Use httpbin to avoid network during tests (Closes: #1055060)
+  * Fix GUI test filter after 3.2.3+dfsg-1 changes
+
+ -- Scott Talbert <swt@techie.net>  Mon, 30 Oct 2023 20:08:17 -0400
+
+wxwidgets3.2 (3.2.3+dfsg-2) unstable; urgency=medium
+
+  * Enable wxWebRequest support
+
+ -- Scott Talbert <swt@techie.net>  Thu, 26 Oct 2023 19:57:55 -0400
+
+wxwidgets3.2 (3.2.3+dfsg-1) unstable; urgency=medium
+
+  * Update to new upstream release 3.2.3
+  * Switch to build with libwebkit2gtk-4.1-dev (libsoup3)
+  * Adjust skipped tests for new release
+
+ -- Scott Talbert <swt@techie.net>  Mon, 16 Oct 2023 19:08:14 -0400
+
+wxwidgets3.2 (3.2.2+dfsg-4) unstable; urgency=medium
+
+  * Skip more tests on specific arches (Closes: #1050238)
+  * Clean docs and tests files after build (Closes: #1048120)
+
+ -- Scott Talbert <swt@techie.net>  Wed, 23 Aug 2023 21:54:33 -0400
+
+wxwidgets3.2 (3.2.2+dfsg-3) unstable; urgency=medium
+
+  * Enable build-time unit tests
+  * Fix building examples (Closes: #1040688)
+  * Add autopkgtests (building samples for now)
+  * Unbundle doxygen-awesome-css (Closes: #1021508)
+
+ -- Scott Talbert <swt@techie.net>  Thu, 03 Aug 2023 20:31:45 -0400
+
+wxwidgets3.2 (3.2.2+dfsg-2) unstable; urgency=medium
+
+  * Fix drawing of icons for non-root wxTreeCtrl items.  This
+    effectively updates the package to v3.2.2.1 as that was the only
+    change in that hotfix release.
+
+ -- Scott Talbert <swt@techie.net>  Thu, 23 Feb 2023 19:23:10 -0500
+
+wxwidgets3.2 (3.2.2+dfsg-1) unstable; urgency=medium
+
+  * d/watch: fix download URL when using GitHub API
+  * Update to new upstream release 3.2.2
+  * Add Breaks/Replaces to libwxgtk-gl3.2-1 (Closes: #1028427)
+
+ -- Scott Talbert <swt@techie.net>  Sat, 11 Feb 2023 13:15:16 -0500
+
+wxwidgets3.2 (3.2.1+dfsg-4) unstable; urgency=medium
+
+  * Fix compilation when using matrix.h (Closes: #1027015)
+  * Fix reproducibility issue with usrmerged vs non-usrmerged
+  * Update Standards-Version to 4.6.2 (no changes needed)
+  * Enable hardening
+  * Remove obsolete Build-Depends/Depends
+  * d/watch: Switch to GitHub API since releases broken w/ uscan
+
+ -- Scott Talbert <swt@techie.net>  Sat, 31 Dec 2022 09:37:25 -0500
+
+wxwidgets3.2 (3.2.1+dfsg-3) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Scott Talbert <swt@techie.net>  Tue, 27 Dec 2022 10:20:52 -0500
+
+wxwidgets3.2 (3.2.1+dfsg-2) experimental; urgency=medium
+
+  [ Debian Janitor ]
+  * Remove constraints unnecessary since buster (oldstable):
+    + Build-Depends: Drop versioned constraint on dpkg-dev and g++.
+
+  [ Scott Talbert ]
+  * Rebuild with wxGLCanvas using GLX (changes ABI) (Closes: #1024147)
+  * Reintroduce patch to force X11 when wxGLCanvas is used
+  * Move gl library to its own binary package
+
+ -- Scott Talbert <swt@techie.net>  Fri, 23 Dec 2022 11:37:52 -0500
+
+wxwidgets3.2 (3.2.1+dfsg-1) unstable; urgency=medium
+
+  * Update to new upstream release 3.2.1
+  * Enable building wx-common
+
+ -- Scott Talbert <swt@techie.net>  Sun, 11 Sep 2022 11:56:11 -0400
+
+wxwidgets3.2 (3.2.0+dfsg-2) unstable; urgency=medium
+
+  * Use indep overrides for docs and examples to fix FTBFS
+
+ -- Scott Talbert <swt@techie.net>  Thu, 08 Sep 2022 17:50:15 -0400
+
 wxwidgets3.2 (3.2.0+dfsg-1) unstable; urgency=medium
 
   * Initial release. (Closes: #919903)

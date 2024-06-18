@@ -1,1 +1,3 @@
+wx3.2-examples: font-in-non-font-package [usr/share/doc/wx3.2-examples/examples/samples/font/wxprivate.ttf]
+wx3.2-examples: font-outside-font-dir [usr/share/doc/wx3.2-examples/examples/samples/font/wxprivate.ttf]
 wx3.2-examples: national-encoding

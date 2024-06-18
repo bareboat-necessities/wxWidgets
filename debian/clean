@@ -1,0 +1,6 @@
+docs/doxygen/doxygen.log
+docs/doxygen/out/
+lib/wx/
+utils/ifacecheck/rungccxml.sh
+wx-config
+version-script

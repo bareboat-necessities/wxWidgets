@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -e
+
+cp -a /usr/share/doc/wx3.2-examples/examples/samples $AUTOPKGTEST_TMP
+make -j $(nproc) -C $AUTOPKGTEST_TMP/samples

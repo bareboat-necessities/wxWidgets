@@ -1,12 +1,33 @@
 #!/usr/bin/make -f
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+include /usr/share/dpkg/buildopts.mk
+
+TEST_FILTER = ~[.]
+TEST_GUI_FILTER = ~[.]
+ifneq (,$(filter $(DEB_HOST_ARCH), alpha loong64 mips64el riscv64 s390x))
+TEST_FILTER += ~[special-file]
+endif
+ifneq (,$(filter $(DEB_HOST_ARCH), alpha hppa loong64 mips64el ppc64 riscv64 s390x sparc64 x32))
+TEST_GUI_FILTER += ~WebView
+endif
+ifneq (,$(filter $(DEB_HOST_ARCH), i386))
+TEST_GUI_FILTER += ~wxImage::ChangeColours
+endif
+# These are failing intermittently (font size related?)
+TEST_GUI_FILTER += ~wxDC::GetPartialTextExtent ~TextCtrlTestCase
+
 %:
-	dh $@ -N wx-common
+	dh $@
 
 override_dh_autoreconf:
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
+		GREP=/bin/grep \
+		--disable-glcanvasegl \
+		--with-liblzma \
 		--enable-repro-build
 
 override_dh_auto_install:
@@ -16,17 +37,18 @@ override_dh_auto_install:
 
 override_dh_install:
 	dh_install
-	rm -f debian/libwxgtk3.2-0/usr/lib/*/libwx_gtk*media*.so.*
-	rm -f debian/libwxgtk3.2-0/usr/lib/*/libwx_gtk*webview*.so.*
+	rm -f debian/libwxgtk3.2-1t64/usr/lib/*/libwx_gtk*gl*.so.*
+	rm -f debian/libwxgtk3.2-1t64/usr/lib/*/libwx_gtk*media*.so.*
+	rm -f debian/libwxgtk3.2-1t64/usr/lib/*/libwx_gtk*webview*.so.*
 	rm -f debian/libwxgtk3.2-dev/usr/lib/*/libwx_gtk*media*.so
 	rm -f debian/libwxgtk3.2-dev/usr/lib/*/libwx_gtk*webview*.so
 
-override_dh_installdocs:
+override_dh_installdocs-indep:
 	WX_SKIP_DOXYGEN_VERSION_CHECK=1	docs/doxygen/regen.sh html
 	dh_installdocs
 	find debian/wx3.2-doc \( -name '*.dot' -o -name '*.md5' \) -delete
 
-override_dh_installexamples:
+override_dh_installexamples-indep:
 	dh_installexamples
 
 	for f in `find debian/wx3.2-examples -name makefile.unx` ; do \
@@ -60,3 +82,17 @@ override_dh_installexamples:
 	# We end up with some empty directories which only had OS X build stuff
 	# in, at least in 3.0.2.
 	find debian/wx3.2-examples -type d -empty -delete
+
+override_dh_auto_test: HOME=$(CURDIR)/debian/.debhelper/generated/_source/home
+override_dh_auto_test:
+	make -j$(DEB_BUILD_OPTION_PARALLEL) -C tests
+	python3 -m httpbin.core & export HTTPBIN_PID=$$!; RC=0; cd tests && WX_TEST_WEBREQUEST_URL="http://localhost:5000" ./test $(TEST_FILTER) || RC=1; kill -9 $${HTTPBIN_PID}; exit $$RC
+	cd tests && wxUSE_XVFB=1 xvfb-run -a ./test_gui $(TEST_GUI_FILTER)
+
+override_dh_auto_clean:
+	dh_auto_clean
+	[ -f tests/Makefile ] && make -j$(DEB_BUILD_OPTION_PARALLEL) -C tests distclean || true
+	find demos -name Makefile -delete
+	find samples -name Makefile -delete
+	find tests -name Makefile -delete
+	find utils -name Makefile -delete

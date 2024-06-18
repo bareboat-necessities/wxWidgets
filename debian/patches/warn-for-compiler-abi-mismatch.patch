@@ -4,12 +4,12 @@ Description: Suppress error about mismatching C++ ABI version
  suppress this error so we don't have to rebuild the entire wx world in one
  go.
 Author: Olly Betts <olly@survex.com>
-Forwarded: no
+Forwarded: not-needed
 Last-Update: 2022-07-18
 
 --- a/src/common/appbase.cpp
 +++ b/src/common/appbase.cpp
-@@ -847,6 +847,26 @@
+@@ -850,6 +850,26 @@
          wxString prog = wxString::FromAscii(optionsSignature);
          wxString progName = wxString::FromAscii(componentName);
  

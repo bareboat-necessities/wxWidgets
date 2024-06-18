@@ -5,7 +5,7 @@ Last-Update: 2022-07-18
 
 --- a/docs/doxygen/Doxyfile
 +++ b/docs/doxygen/Doxyfile
-@@ -346,7 +346,7 @@
+@@ -361,7 +361,7 @@
  HTML_COLORSTYLE_HUE    = 220 # Default: 220
  HTML_COLORSTYLE_SAT    = 255 # Default: 100
  HTML_COLORSTYLE_GAMMA  = 100 # Default: 80
