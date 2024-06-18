@@ -28,6 +28,8 @@ override_dh_auto_configure:
 		GREP=/bin/grep \
 		--disable-glcanvasegl \
 		--with-liblzma \
+		--with-libmspack \
+		--with-sdl \
 		--enable-repro-build
 
 override_dh_auto_install:
