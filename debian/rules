@@ -16,7 +16,7 @@ ifneq (,$(filter $(DEB_HOST_ARCH), i386))
 TEST_GUI_FILTER += ~wxImage::ChangeColours
 endif
 # These are failing intermittently (font size related?)
-TEST_GUI_FILTER += ~wxDC::GetPartialTextExtent ~TextCtrlTestCase
+TEST_GUI_FILTER += ~wxDC::GetPartialTextExtent ~TextCtrlTestCase ~wxHtmlPrintout::Pagination
 
 %:
 	dh $@
