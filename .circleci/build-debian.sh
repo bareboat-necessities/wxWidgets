@@ -121,7 +121,7 @@ docker exec --privileged -ti $DOCKER_CONTAINER_ID apt-get -y install autotools-d
 docker exec --privileged -ti $DOCKER_CONTAINER_ID ldconfig
 
 docker exec --privileged -ti $DOCKER_CONTAINER_ID /bin/bash -xec \
-    "update-alternatives --set fakeroot /usr/bin/fakeroot-tcp; cd ci-source/work; echo 'MIRRORSITE=http://deb.debian.org/debian' > /etc/pbuilderrc; dpkg-buildpackage -uc -us -j8; mkdir dist; mv ../*.deb dist; chmod -R a+rw dist"
+    "update-alternatives --set fakeroot /usr/bin/fakeroot-tcp; cd ci-source/work; curl -o /etc/pbuilderrc http://www.mirbsd.org/cvs.cgi/~checkout~/contrib/hosted/tg/deb/pbuilderrc?rev=1.101;content-type=text%2Fplain ; dpkg-buildpackage -uc -us -j8; mkdir dist; mv ../*.deb dist; chmod -R a+rw dist"
 
 find work/dist -name \*.\*$EXT
 
