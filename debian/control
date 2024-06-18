@@ -36,8 +36,8 @@ Vcs-Browser: https://salsa.debian.org/freewx-team/wxwidgets3.2
 Homepage: https://www.wxwidgets.org/
 Rules-Requires-Root: no
 
-Package: libwxbase3.2-1t64
-Provides: ${t64:Provides}
+Package: libwxbase3.2-1
+Provides: ${:Provides}
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends},
 Depends: ${misc:Depends},
@@ -59,8 +59,8 @@ Description: wxBase library (runtime) - non-GUI support classes of wxWidgets too
  classes in libwx_gtk3.2 for use in console apps and daemons.  You do not need
  this package to build or use wxWidgets GUI apps.
 
-Package: libwxgtk3.2-1t64
-Provides: ${t64:Provides}
+Package: libwxgtk3.2-1
+Provides: ${:Provides}
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends},
 Depends: ${misc:Depends},
@@ -82,9 +82,9 @@ Architecture: any
 Section: libdevel
 Depends: libgl-dev,
          libglu1-mesa-dev,
-         libwxbase3.2-1t64 (= ${binary:Version}),
-         libwxgtk-gl3.2-1t64 (= ${binary:Version}),
-         libwxgtk3.2-1t64 (= ${binary:Version}),
+         libwxbase3.2-1 (= ${binary:Version}),
+         libwxgtk-gl3.2-1 (= ${binary:Version}),
+         libwxgtk3.2-1 (= ${binary:Version}),
          wx-common,
          wx3.2-headers (= ${source:Version}),
          ${misc:Depends},
@@ -102,8 +102,8 @@ Description: wxWidgets Cross-platform C++ GUI toolkit (GTK 3 development)
  .
  This package also provides the wx-config script.
 
-Package: libwxgtk-gl3.2-1t64
-Provides: ${t64:Provides}
+Package: libwxgtk-gl3.2-1
+Provides: ${:Provides}
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends},
 Depends: ${misc:Depends},
@@ -119,8 +119,8 @@ Description: wxWidgets Cross-platform C++ GUI toolkit (GTK 3 gl library runtime)
  This package provides the media shared libraries needed to run programs linked
  against libwx_gtk3u_gl.
 
-Package: libwxgtk-media3.2-1t64
-Provides: ${t64:Provides}
+Package: libwxgtk-media3.2-1
+Provides: ${:Provides}
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends},
 Depends: ${misc:Depends},
@@ -139,7 +139,7 @@ Description: wxWidgets Cross-platform C++ GUI toolkit (GTK 3 media library runti
 Package: libwxgtk-media3.2-dev
 Architecture: any
 Section: libdevel
-Depends: libwxgtk-media3.2-1t64 (= ${binary:Version}),
+Depends: libwxgtk-media3.2-1 (= ${binary:Version}),
          libwxgtk3.2-dev (= ${binary:Version}),
          wx-common,
          wx3.2-headers (= ${source:Version}),
@@ -155,8 +155,8 @@ Description: wxWidgets Cross-platform C++ GUI toolkit (GTK 3 media library devel
  This package provides files needed to compile wxWidgets programs using the
  wxMediaCtrl class.
 
-Package: libwxgtk-webview3.2-1t64
-Provides: ${t64:Provides}
+Package: libwxgtk-webview3.2-1
+Provides: ${:Provides}
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends},
 Depends: ${misc:Depends},
@@ -175,7 +175,7 @@ Description: wxWidgets Cross-platform C++ GUI toolkit (GTK 3 webview library run
 Package: libwxgtk-webview3.2-dev
 Architecture: any
 Section: libdevel
-Depends: libwxgtk-webview3.2-1t64 (= ${binary:Version}),
+Depends: libwxgtk-webview3.2-1 (= ${binary:Version}),
          libwxgtk3.2-dev (= ${binary:Version}),
          wx-common,
          wx3.2-headers (= ${source:Version}),

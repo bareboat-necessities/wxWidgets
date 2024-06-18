@@ -40,9 +40,9 @@ override_dh_auto_install:
 
 override_dh_install:
 	dh_install
-	rm -f debian/libwxgtk3.2-1t64/usr/lib/*/libwx_gtk*gl*.so.*
-	rm -f debian/libwxgtk3.2-1t64/usr/lib/*/libwx_gtk*media*.so.*
-	rm -f debian/libwxgtk3.2-1t64/usr/lib/*/libwx_gtk*webview*.so.*
+	rm -f debian/libwxgtk3.2-1/usr/lib/*/libwx_gtk*gl*.so.*
+	rm -f debian/libwxgtk3.2-1/usr/lib/*/libwx_gtk*media*.so.*
+	rm -f debian/libwxgtk3.2-1/usr/lib/*/libwx_gtk*webview*.so.*
 	rm -f debian/libwxgtk3.2-dev/usr/lib/*/libwx_gtk*media*.so
 	rm -f debian/libwxgtk3.2-dev/usr/lib/*/libwx_gtk*webview*.so
 

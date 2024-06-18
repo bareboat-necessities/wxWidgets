@@ -13,7 +13,7 @@ wxwidgets3.2 (3.2.4+dfsg-5) unstable; urgency=medium
 wxwidgets3.2 (3.2.4+dfsg-4) unstable; urgency=medium
 
   * Remove unmaintained shlibs file (Closes: #1060711)
-  * Fix lintian overrides after t64 changes
+  * Fix lintian overrides after  changes
   * Add some more lintian overrides
   * Mark patches as not needing forwarding
 
