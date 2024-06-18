@@ -3,7 +3,7 @@ Section: libs
 Priority: optional
 Build-Depends-Indep: doxygen,
                      graphviz,
-Build-Depends: dpkg-dev (>= 1.22.5), ca-certificates <!nocheck>,
+Build-Depends: dpkg-dev (>= 1.21.22), ca-certificates <!nocheck>,
                debhelper-compat (= 13),
                gettext,
                libcurl4-openssl-dev,
