@@ -1,24 +1,24 @@
 ---
 version: 2.1
 orbs:
-  cloudsmith: cloudsmith/cloudsmith@1.0.4
+  cloudsmith: cloudsmith/cloudsmith@1.0.5
 executors:
   boot-linux:
     machine:
       resource_class: large
       enabled: true
-      image: ubuntu-2004:202104-01
+      image: ubuntu-2204:2024.01.2
   boot-linux-arm:
     machine:
       resource_class: arm.large
       enabled: true
-      image: ubuntu-2004:202104-01
+      image: ubuntu-2204:2024.01.2
 commands:
   git-checkout:
     steps:
       - run: mkdir work
-      - run: cd work && wget -nc -O - https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.0/wxWidgets-3.2.0.tar.bz2 > ../wxwidgets3.2_3.2.0+dfsg.orig.tar.bz2
-      - run: cd work && bzip2 < ../wxwidgets3.2_3.2.0+dfsg.orig.tar.bz2 -cd | tar xvf -; shopt -s dotglob; mv wxWidgets-3.2.0/* .; rmdir wxWidgets-3.2.0
+      - run: cd work && wget -nc -O - https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.5/wxWidgets-3.2.5.tar.bz2 > ../wxwidgets3.2_3.2.5+dfsg.orig.tar.bz2
+      - run: cd work && bzip2 < ../wxwidgets3.2_3.2.5+dfsg.orig.tar.bz2 -cd | tar xvf -; shopt -s dotglob; mv wxWidgets-3.2.5/* .; rmdir wxWidgets-3.2.5
       - run: cd work && wget -nc -O - https://github.com/bareboat-necessities/wxWidgets/archive/master.tar.gz | gzip -cd - | tar xvf - ; mv *-master/debian .; mv *-master/.circleci ..
   build-n-publish-debian:
     steps:
@@ -65,6 +65,26 @@ jobs:
       - PKG_DISTRO=debian
     steps:
       - do-all
+  build-raspbian-buster-arm32:
+    executor: boot-linux-arm
+    environment:
+      - DOCKER_IMAGE=arm32v7/debian:buster
+      - CONTAINER_DISTRO=debian:buster
+      - PKG_RELEASE=buster
+      - PKG_DISTRO=raspbian
+      - EMU=off
+    steps:
+      - do-all
+  build-raspbian-buster-arm64:
+    executor: boot-linux-arm
+    environment:
+      - DOCKER_IMAGE=arm64v8/debian:buster
+      - CONTAINER_DISTRO=debian:buster
+      - PKG_RELEASE=buster
+      - PKG_DISTRO=raspbian
+      - EMU=off
+    steps:
+      - do-all
   build-debian-bullseye-arm64:
     executor: boot-linux-arm
     environment:
@@ -94,33 +114,45 @@ jobs:
       - PKG_DISTRO=debian
     steps:
       - do-all
-  build-raspbian-buster-arm32:
+  build-debian-bookworm-arm64:
     executor: boot-linux-arm
     environment:
-      - DOCKER_IMAGE=arm32v7/debian:buster
-      - CONTAINER_DISTRO=debian:buster
-      - PKG_RELEASE=buster
-      - PKG_DISTRO=raspbian
+      - DOCKER_IMAGE=arm64v8/debian:bookworm
+      - CONTAINER_DISTRO=debian:bookworm
+      - PKG_RELEASE=bookworm
+      - PKG_DISTRO=debian
       - EMU=off
     steps:
       - do-all
-  build-raspbian-buster-arm64:
+  build-debian-bookworm-arm32:
     executor: boot-linux-arm
     environment:
-      - DOCKER_IMAGE=arm64v8/debian:buster
-      - CONTAINER_DISTRO=debian:buster
-      - PKG_RELEASE=buster
-      - PKG_DISTRO=raspbian
+      - DOCKER_IMAGE=arm32v7/debian:bookworm
+      - CONTAINER_DISTRO=debian:bookworm
+      - PKG_RELEASE=bookworm
+      - PKG_DISTRO=debian
       - EMU=off
+    steps:
+      - do-all
+  build-debian-bookworm-amd64:
+    executor: boot-linux
+    environment:
+      - DOCKER_IMAGE=amd64/debian:bookworm
+      - CONTAINER_DISTRO=debian:bookworm
+      - PKG_RELEASE=bookworm
+      - PKG_DISTRO=debian
     steps:
       - do-all
 workflows:
   version: 2
   build_all:
     jobs:
-      - build-debian-bullseye-arm32
-      - build-debian-bullseye-arm64
-      - build-debian-bullseye-amd64
+      - build-debian-bookworm-arm32
+      - build-debian-bookworm-arm64
+      - build-debian-bookworm-amd64
+#      - build-debian-bullseye-arm32
+#      - build-debian-bullseye-arm64
+#      - build-debian-bullseye-amd64
 #      - build-debian-buster-arm32
 #      - build-debian-buster-arm64
 #      - build-debian-buster-amd64
