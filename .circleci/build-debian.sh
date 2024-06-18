@@ -53,6 +53,8 @@ docker exec --privileged -ti $DOCKER_CONTAINER_ID apt-get -y install autotools-d
     libpng-dev                             \
     libtiff5-dev                           \
     libsm-dev                              \
+    libsdl2-dev                            \
+    libmspack-dev                          \
     libexpat1-dev                          \
     libxt-dev                              \
     libcurl4-openssl-dev                   \
