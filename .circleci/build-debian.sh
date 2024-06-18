@@ -34,6 +34,9 @@ docker exec --privileged -ti $DOCKER_CONTAINER_ID apt-get -y install apt-transpo
 #docker exec --privileged -ti $DOCKER_CONTAINER_ID /bin/bash -xec \
 #  "wget -q 'https://dl.cloudsmith.io/public/bbn-projects/bbn-repo/cfg/setup/config.deb.txt?distro=${PKG_DISTRO}&codename=${PKG_RELEASE}' -O- | tee -a /etc/apt/sources.list"
 
+docker exec --privileged -ti $DOCKER_CONTAINER_ID /bin/bash -xec \
+    "echo 'deb http://deb.debian.org/debian/ stable main contrib' > /etc/apt/sources.list && rm /etc/apt/sources.list.d/debian.sources"
+
 #docker exec --privileged -ti $DOCKER_CONTAINER_ID apt-get upgrade
 docker exec --privileged -ti $DOCKER_CONTAINER_ID apt-get -y install dpkg-dev devscripts equivs pkg-config apt-utils fakeroot pbuilder
 docker exec --privileged -ti $DOCKER_CONTAINER_ID apt-get -y install autotools-dev autoconf dh-exec cmake gettext git-core \
@@ -121,9 +124,7 @@ docker exec --privileged -ti $DOCKER_CONTAINER_ID apt-get -y install autotools-d
 docker exec --privileged -ti $DOCKER_CONTAINER_ID ldconfig
 
 docker exec --privileged -ti $DOCKER_CONTAINER_ID /bin/bash -xec \
-    "echo 'deb http://deb.debian.org/debian/ stable main contrib' > /etc/apt/sources.list && rm /etc/apt/sources.list.d/debian.sources"
-docker exec --privileged -ti $DOCKER_CONTAINER_ID /bin/bash -xec \
-    "update-alternatives --set fakeroot /usr/bin/fakeroot-tcp; cd ci-source/work; pbuilder create --distribution bookworm; dpkg-buildpackage -uc -us -j8; mkdir dist; mv ../*.deb dist; chmod -R a+rw dist"
+    "update-alternatives --set fakeroot /usr/bin/fakeroot-tcp; cd ci-source/work; dpkg-buildpackage -uc -us -j8; mkdir dist; mv ../*.deb dist; chmod -R a+rw dist"
 
 find work/dist -name \*.\*$EXT
 
