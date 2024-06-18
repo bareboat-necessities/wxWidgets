@@ -59,7 +59,9 @@ docker exec --privileged -ti $DOCKER_CONTAINER_ID apt-get -y install autotools-d
     libgstreamer1.0-dev                    \
     libgstreamer-plugins-base1.0-dev       \
     libgstreamer-plugins-bad1.0-dev        \
-    libwebkit2gtk-4.0-dev                  \
+    libwebkit2gtk-4.1-dev                  \
+    locales-all                            \
+    python3-httpbin                        \
     libnotify-dev                          \
     wget                                   \
     doxygen                                \
