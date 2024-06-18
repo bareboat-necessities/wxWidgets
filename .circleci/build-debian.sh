@@ -27,7 +27,11 @@ docker run --privileged --cap-add=ALL --security-opt="seccomp=unconfined" -d -ti
 DOCKER_CONTAINER_ID=$(docker ps --last 4 | grep $CONTAINER_DISTRO | awk '{print $1}')
 
 docker exec --privileged -ti $DOCKER_CONTAINER_ID /bin/bash -xec \
-    "echo 'deb http://deb.debian.org/debian/ stable main contrib' > /etc/apt/sources.list && rm /etc/apt/sources.list.d/debian.sources"
+    "echo 'deb http://deb.debian.org/debian/ bookworm main contrib' > /etc/apt/sources.list && rm /etc/apt/sources.list.d/debian.sources"
+docker exec --privileged -ti $DOCKER_CONTAINER_ID /bin/bash -xec \
+    "echo 'deb http://deb.debian.org/debian/ bookworm-updates main contrib' >> /etc/apt/sources.list"
+docker exec --privileged -ti $DOCKER_CONTAINER_ID /bin/bash -xec \
+    "echo 'deb http://deb.debian.org/debian-security/ bookworm-security main contrib' >> /etc/apt/sources.list"
 
 docker exec --privileged -ti $DOCKER_CONTAINER_ID apt-get update
 docker exec --privileged -ti $DOCKER_CONTAINER_ID apt-get -y install apt-transport-https wget curl gnupg2
