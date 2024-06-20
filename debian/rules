@@ -26,7 +26,6 @@ override_dh_autoreconf:
 override_dh_auto_configure:
 	dh_auto_configure -- \
 		GREP=/bin/grep \
-		--disable-glcanvasegl \
 		--enable-compat30 \
 		--with-liblzma \
 		--with-libmspack \
